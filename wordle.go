@@ -17,8 +17,10 @@ func main() {
 	word_list := load_dictionary()
 
 	// pick a random word from list
-	randidx := rand.Intn(len(word_list))
-	fmt.Println("Random word: ", word_list[randidx])
+	var word string
+	word = choose_random_word(word_list)
+
+	fmt.Println("Random word: ", word)
 }
 
 // load_dictionary loads a wordle dictionary.
@@ -62,4 +64,11 @@ func download_dictionary() ([]byte, error) {
 	}
 	err = ioutil.WriteFile("wordle.dict", body, 0644)
 	return body, err
+}
+
+// choose_random_word uses a random int to find a
+// random word in our word_list of 5-letter words
+func choose_random_word(word_list []string) string {
+	randidx := rand.Intn(len(word_list))
+	return word_list[randidx]
 }
