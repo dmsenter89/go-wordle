@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	fmt.Println("hello, world!")
+	fmt.Println("Welcome to go-wordle!")
 
 	word_list := load_dictionary()
 
@@ -30,12 +30,13 @@ func load_dictionary() []string {
 	// read wordle dict if present,
 	body, err := ioutil.ReadFile("wordle.dict") // just pass the file name
 	if err != nil {
-		fmt.Println("Dictionary not found (", err, ").\nDownloading dictionary.")
+		fmt.Printf("Dictionary not found. Error:\n\t%s.\n", err)
+		fmt.Println("Downloading dictionary.")
 		body, err = download_dictionary()
 	}
 
 	scanner := bufio.NewScanner(strings.NewReader(string(body))) // f is the *os.File
-	word_list := make([]string, 0, 15000)                        // pre-allocate room for 15k words
+	word_list := make([]string, 0, 20000)                        // pre-allocate room for 15k words
 	var curr_word string
 
 	for scanner.Scan() {
