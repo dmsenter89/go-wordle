@@ -21,9 +21,9 @@ func main() {
 	fmt.Println("Random word: ", word_list[randidx])
 }
 
-// load_dictionary loads a world dictionary.
-// If the wordle dictionary is not found, one will be created.
-// Returns a string slice consisting of 5-letter words.
+// load_dictionary loads a wordle dictionary.
+// If a dictionary is not found, one will be downloaded. The dictionary
+// will be parsed to return a string slice consisting of 5-letter words only.
 func load_dictionary() []string {
 	// read wordle dict if present,
 	body, err := ioutil.ReadFile("wordle.dict") // just pass the file name
@@ -46,6 +46,9 @@ func load_dictionary() []string {
 	return word_list
 }
 
+// download_dictionary downloads a complete English language dictionary.
+// Note that in the current state, the full-dictionary is saved and so
+// load_dictionary must parse out the 5-letter words during each program start.
 func download_dictionary() ([]byte, error) {
 	resp, err := http.Get("https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt")
 	if err != nil {
