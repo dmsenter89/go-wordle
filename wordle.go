@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 	word_list := load_dictionary()
 
 	// pick a random word from list
+	rand.Seed(time.Now().UnixNano())
 	var word string
 	word = choose_random_word(word_list)
 
