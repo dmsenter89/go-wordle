@@ -23,6 +23,9 @@ func main() {
 	word = choose_random_word(word_list)
 
 	fmt.Println("Random word: ", word)
+
+	guess := user_input()
+	fmt.Println("User guess:", guess)
 }
 
 // load_dictionary loads a wordle dictionary.
@@ -74,4 +77,22 @@ func download_dictionary() ([]byte, error) {
 func choose_random_word(word_list []string) string {
 	randidx := rand.Intn(len(word_list))
 	return word_list[randidx]
+}
+
+func user_input() string {
+	var guess string
+
+	for {
+		fmt.Print("Enter a 5-letter word: ")
+		fmt.Scan(&guess)
+
+		// validate the length of the guess
+		if len(guess) == 5 {
+			break
+		} else {
+			fmt.Println("You must enter a 5-letter word.")
+		}
+	}
+
+	return strings.ToUpper(guess)
 }
