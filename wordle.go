@@ -19,13 +19,56 @@ func main() {
 
 	// pick a random word from list
 	rand.Seed(time.Now().UnixNano())
-	var word string
+	var word, guess string
+	var comparison []int
 	word = choose_random_word(word_list)
-
 	fmt.Println("Random word: ", word)
 
-	guess := user_input()
-	fmt.Println("User guess:", guess)
+	for i := 1; i <= 6; i++ {
+		fmt.Printf("Guess %d/6. ", i)
+		guess = user_input()
+
+		comparison = compare_answer(guess, word)
+		fmt.Println("User input:", guess, "- Value comparison:", comparison)
+		if guess == word {
+			fmt.Println("Congrats! You guessed the correct word in", i, "guesses.")
+			break
+		}
+	}
+}
+
+// compare the user's guess to the answer. return
+// an integer slice where a 0 indicates the letter in
+// that position does not occur in the answer,
+// a 1 indicates a match between the letter and position,
+// and a 2 indicates that letter exists in the answer, but in
+// a different position.
+func compare_answer(guess_str string, answer string) []int {
+	comparison := make([]int, 5, 5)
+	indices := make([]int, 0, 5)
+	guess := []rune(guess_str)
+
+	// one-by-one comparison to get the "green" letters
+	for i, letter := range answer {
+		if letter == guess[i] {
+			comparison[i] = 1
+		} else {
+			// while iterating, create index of non-matches
+			indices = append(indices, i)
+		}
+	}
+
+	// iterate over non-exact matches, highlight those that
+	// occur in string at another position
+	var letter rune
+	for _, j := range indices {
+		letter = guess[j]
+		if strings.ContainsRune(answer, letter) {
+			comparison[j] = 2
+		}
+	}
+
+	return comparison
 }
 
 // load_dictionary loads a wordle dictionary.
@@ -79,6 +122,11 @@ func choose_random_word(word_list []string) string {
 	return word_list[randidx]
 }
 
+// get user input, require length of 5. Do not validate if
+// user input is in dictionary. Assumes ASCII answer,
+// does not work properly with unicode answers by user,
+// but those wouldn't be in the dictionary we use in the
+// first place.
 func user_input() string {
 	var guess string
 
