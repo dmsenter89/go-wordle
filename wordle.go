@@ -1,3 +1,4 @@
+// Package main(wordle) implements a simple wordle game.
 package main
 
 import (
