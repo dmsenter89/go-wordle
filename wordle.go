@@ -98,14 +98,14 @@ func user_input() string {
 	var guess string
 
 	for {
-		fmt.Print("Enter a 5-letter word: ")
+		fmt.Print("Please enter a 5-letter word: ")
 		fmt.Scan(&guess)
 
 		// validate the length of the guess
 		if len(guess) == 5 {
 			break
 		} else {
-			fmt.Println("You must enter a 5-letter word.")
+			fmt.Print("Invalid input. You must enter a 5-letter word. ")
 		}
 	}
 
