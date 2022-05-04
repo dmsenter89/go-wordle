@@ -21,21 +21,43 @@ func main() {
 
 	// pick a random word from list
 	rand.Seed(time.Now().UnixNano())
-	var word, guess, colored_comparison string
+	var word, guess, colored_comparison, new_round string
 	var comparison []int
-	word = choose_random_word(word_list)
-	fmt.Println("Random word: ", word)
 
-	for i := 1; i <= 6; i++ {
-		fmt.Printf("Guess %d/6. ", i)
-		guess = user_input()
+	// name the game loop so that we can break out of it
+gameLoop:
+	for {
+		word = choose_random_word(word_list)
+		fmt.Println("I picked a random 5-letter word. Try to guess it.")
+		var correct = false
 
-		comparison = compare_answer(guess, word)
-		colored_comparison = color_comparison(guess, comparison)
-		fmt.Println(colored_comparison, " - your guess compared:", comparison)
-		if guess == word {
-			fmt.Println("Congrats! You guessed the correct word in", i, "guesses.")
-			break
+		for i := 1; i <= 6; i++ {
+			fmt.Printf("Guess %d/6. ", i)
+			guess = user_input()
+
+			comparison = compare_answer(guess, word)
+			colored_comparison = color_comparison(guess, comparison)
+			fmt.Println(colored_comparison, " - your guess compared:", comparison)
+			if guess == word {
+				correct = true
+				break
+			}
+		}
+
+		if correct == true {
+			fmt.Println("Congrats! You guessed the correct word.")
+		} else {
+			fmt.Println("You didn't guess the right word. It was", word)
+		}
+
+		fmt.Print("Press 'y(es)' for another round, else exit. ")
+		fmt.Scanln(&new_round)
+		switch strings.ToLower(new_round) {
+		case "y", "yes":
+			fmt.Println("---- new game ----")
+			continue
+		default:
+			break gameLoop
 		}
 	}
 }
